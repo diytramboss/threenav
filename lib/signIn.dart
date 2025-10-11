@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:threenav/main.dart';
-import 'dataFile.dart';
 
 class SignIn extends StatelessWidget {
   const SignIn({super.key, required this.uname, required this.pass});
 
   final String uname;
   final String pass;
-  final String iuname;
-  final String ipass;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +28,7 @@ class SignIn extends StatelessWidget {
               Text('Sign In', style: GoogleFonts.roboto(fontSize: 24)),
             ],
           ),
-          const Row(
+          Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [SignInForm()],
           ),
@@ -42,13 +39,16 @@ class SignIn extends StatelessWidget {
               ElevatedButton(
                 child: const Text('Sign In'),
                 onPressed: () {
-                  if (uname == SignInFormState.iuname)
+                  final formState = signInFormKey.currentState;
+                  if (formState != null &&
+                      uname == formState.usernameController.text) {
                     Navigator.push(
                       context,
                       MaterialPageRoute<void>(
                         builder: (newContext) => MainApp(),
                       ),
                     );
+                  }
                 },
               ),
             ],
@@ -59,13 +59,13 @@ class SignIn extends StatelessWidget {
   }
 }
 
+final GlobalKey<SignInFormState> signInFormKey = GlobalKey<SignInFormState>();
+
 class SignInForm extends StatefulWidget {
   const SignInForm({super.key});
 
   @override
   State<SignInForm> createState() => SignInFormState();
-  dynamic iuname = SignInFormState.usernameController.text;
-  dynamic ipass = passwordController.text;
 }
 
 class SignInFormState extends State<SignInForm> {
